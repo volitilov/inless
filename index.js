@@ -52,19 +52,14 @@ var deleteFolderRecursive = function(path) {
 
 var pBase = '.'+path.sep+'styles'+path.sep;
 var pComponents = pBase+'components'+path.sep;
-var pRoutes = pBase+'routes'+path.sep;
 
 var init = function() {
 	var fMain = "// main file \n\n@import (less) \"variables.less\";\n";
 	mkdir(pBase);
 	mkdir(pComponents);
-	mkdir(pRoutes);
-	mkfile(pComponents+'variables.less', "");
-	mkfile(pComponents+'main.less', fMain);
-	mkfile(pRoutes+'variables.less', "");
-	mkfile(pRoutes+'main.less', fMain);
+	mkfile(pComponents+'main.less', '\n\n');
 	mkfile(pBase+'variables.less', "");
-	mkfile(pBase+'main.less', fMain+"\n\n@import (less) \"components/main.less\";\n\n@import (less) \"routes/main.less\";\n");
+	mkfile(pBase+'bundle.less', fMain+"\n\n@import (less) \"components/main.less\";\n\n");
 	console.log('Success: project created!');
 }
 
@@ -95,31 +90,6 @@ var createComponent = function(name) {
 	console.log('Success: component '+name+' created!');
 }
 
-var createRoute = function(name) {
-	var file = "\n\n\n//    "+name+"    \n\n"+
-		".route-"+name+" {\n"+
-		"\t@import (less) \"variables.less\";\n"+
-		"\t@import (less) \"default.less\";\n"+
-		"\t@import (less) \"xs.less\";\n"+
-		"\t@import (less) \"sm.less\";\n"+
-		"\t@import (less) \"md.less\";\n"+
-		"\t@import (less) \"lg.less\";\n"+
-		"}\n\n";
-	var dir = pRoutes+name+path.sep;
-	mkdir(dir);
-	mkfile(dir+'default.less');
-	mkfile(dir+'xs.less');
-	mkfile(dir+'sm.less');
-	mkfile(dir+'md.less');
-	mkfile(dir+'lg.less');
-	mkfile(dir+'variables.less');
-	mkfile(dir+'index.less', file);
-	var main = fs.readFileSync(pRoutes+'main.less');
-	main += "\n\n@import (less) \""+name+"/index.less\";";
-	fs.writeFileSync(pRoutes+'main.less', main);
-	console.log('Success: route '+name+' created!');
-}
-
 var removeComponent = function(name) {
 	var dir = pComponents+name+path.sep;
 	rmdir(dir);
@@ -129,22 +99,10 @@ var removeComponent = function(name) {
 	console.log('Success: component '+name+' removed!');
 }
 
-var removeRoute = function(name) {
-	var dir = pRoutes+name+path.sep;
-	rmdir(dir);
-	var main = fs.readFileSync(pRoutes+'main.less');
-	main = main.replace(new RegExp('\\n\\n\@import\\s\\(less\\)\\s\"'+name+'\\/index\\.less\"\;', 'ig'),"")
-	fs.writeFileSync(pComponents+'main.less', main);
-	console.log('Success: route '+name+' removed!');
-}
-
 var create = function(type, name) {
 	switch(type) {
 		case "component":
 			createComponent(name);
-		break;
-		case "route":
-			createRoute(name);
 		break;
 		default:
 			console.log("Error: wrong type:", type);
@@ -155,9 +113,6 @@ var remove = function(type, name) {
 	switch(type) {
 		case "component":
 			removeComponent(name);
-		break;
-		case "route":
-			removeRoute(name);
 		break;
 		default:
 			console.log("Error: wrong type:", type);

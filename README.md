@@ -30,21 +30,21 @@ inless create compnent lalka
 inless remove compnent lalka
 ```
 
-### create new route
+## Editing
+
+### global variables
+
+all global variables added into file
 
 ```
-inless create route azaza
+./styles/variables.less
 ```
 
-### remove route
-
-```
-inless remove route azaza
-```
 
 ## Usage in html
 
 ```
+<link res="stylesheet" href="/styles/bundle.css" />
 <div class="route-azaza">
 	<div class="component-lalka">
 		<h3>Heading</h3>
