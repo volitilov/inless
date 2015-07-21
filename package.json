@@ -16,7 +16,7 @@
     "url": "https://github.com/TuxUbuntu/inless/issues"
   },
   "bin": {
-    "inless": "index.js"
+    "inless": "bin.js"
   },
   "homepage": "https://github.com/TuxUbuntu/inless",
   "preferGlobal": "true"
