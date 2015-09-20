@@ -1,0 +1,8 @@
+{
+	"levels": {
+		"lg": "only screen and (max-width : 1200px)",
+		"ms": "only screen and (max-width : 992px)",
+		"sm": "only screen and (max-width : 768px)",
+		"xs": "only screen and (max-width : 480px)"
+	}
+}

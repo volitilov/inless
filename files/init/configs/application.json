@@ -1,0 +1,16 @@
+{
+	"react": {
+		"layout": "/basics/layout.jsx",
+		"template": "/basics/_template.html",
+		"browser": "/basics/browser.jsx"
+	},
+	"markup": {
+		"template": "/basics/_template.html"
+	},
+	"style": {
+		"bundle": "/bundle.css"
+	},
+	"browser": {
+		"bundle": "/bundle.js"
+	}
+}

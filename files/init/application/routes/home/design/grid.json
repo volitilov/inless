@@ -1,0 +1,15 @@
+{
+	"mods": [],
+	"levels": [
+		{
+			"level": "lg",
+			"cols": 12,
+			"components": [
+				{
+					"name": "head",
+					"col": 12
+				}
+			]
+		}
+	]
+}

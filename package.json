@@ -1,7 +1,7 @@
 {
   "name": "inless",
-  "version": "1.0.0",
-  "description": "create less project",
+  "version": "0.0.2",
+  "description": "framework for people",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -19,5 +19,8 @@
     "inless": "bin.js"
   },
   "homepage": "https://github.com/TuxUbuntu/inless",
-  "preferGlobal": "true"
+  "preferGlobal": "true",
+  "dependencies": {
+    "tar.gz": "^1.0.1"
+  }
 }

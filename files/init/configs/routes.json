@@ -1,0 +1,10 @@
+{
+	"pages": [
+		{
+			"path": "/",
+			"title": "inLess Project",
+			"name": "home"
+		}
+	],
+	"errors": []
+}
