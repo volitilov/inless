@@ -1,4 +1,4 @@
-//#!/usr/bin/env node
+#!/usr/bin/env node
 
 var inLess = require('./../classes/class.inless.js');
 
