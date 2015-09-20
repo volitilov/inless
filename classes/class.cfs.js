@@ -13,8 +13,8 @@ var fileSystem = (function() {
 			return name.split('/').join(path.sep);
 		},
 		_lNrlm: function(name) {
-			return path.join(process.argv[1], this._pNrlm(name
-				.replace('$FILES', './../../files')));
+			return this._pNrlm(name
+				.replace('$FILES', path.resolve(module.paths[1], '../files')));
 		},
 		rm: function(name) {
 			var deleteFolderRecursive = function(path) {

@@ -57,7 +57,8 @@ switch (command) {
 		}
 		break;
 	case "test":
-		inless.test();
+		console.log(require('path').resolve(module.paths[1], '../files'));
+		//inless.test();
 		break;
 	default:
 }
