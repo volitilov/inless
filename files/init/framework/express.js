@@ -1,12 +1,16 @@
 import path from 'path';
 import express from 'express';
-import logger from 'morgan';
+import eLogger from 'morgan';
 import bodyParser from 'body-parser';
 import multer from 'multer';
 import compression from 'compression';
 
 import process from 'process';
-var mode = process.argv[2] || 'markup';
+var mode = process.argv[2] || 'production';
+
+import Logger from 'logger';
+
+var logger = Logger.getLogger('express');
 
 
 var cookieParser = require('cookie-parser')();
@@ -18,7 +22,7 @@ app.disable('x-powered-by');
 app.use(compression({
 	level: 9
 }));
-app.use(logger('dev'));
+app.use(eLogger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended: true

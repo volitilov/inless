@@ -8,7 +8,8 @@
 		"template": "/basics/_template.html"
 	},
 	"style": {
-		"bundle": "/bundle.css"
+		"bundle": "/bundle.css",
+		"rootSelector": ".application"
 	},
 	"browser": {
 		"bundle": "/bundle.js"

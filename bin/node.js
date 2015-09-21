@@ -29,7 +29,7 @@ switch (command) {
 				break;
 			case "page":
 			case "route":
-				inless.createRoute(args[4], args[5], args[6]);
+				inless.createRoute(args[4], args[5], args[6], args[7]);
 				break;
 			case "mod":
 			case "modificator":

@@ -134,7 +134,7 @@ var inLess = (function() {
 				});
 			}
 		},
-		createRoute: function(name, pth, title) {
+		createRoute: function(name, pth, status, title) {
 			var defName = 'route'+((Math.random()*1000)|0);
 			var x = function() {
 				console.log('create Route ' + name);
@@ -172,6 +172,15 @@ var inLess = (function() {
 				});
 			}
 			var c = function() {
+				if(title) {
+					return x();
+				}
+				cfs.readLine('route status (default 8): ', function(answer) {
+					status = answer||8;
+					d();
+				});
+			}
+			var d = function() {
 				if(title) {
 					return x();
 				}
