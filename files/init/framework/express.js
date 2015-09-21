@@ -50,16 +50,16 @@ app.use((req, res, next) => {
 require('plugins/singleton.js').app = app;
 
 
-app = require('./style.js')(app, mode);
+app.use(require('./style.js'));
 
 switch (mode) {
 	case "production":
 	case "development":
-		app.use('/rpc', require('./express.rpc.js'));
-		app = require('./router.js')(app);
+		app.use(require('./express.rpc.js'));
+		app.use(require('./router.js'));
 		break;
 	case "markup":
-		app = require('./markup.js')(app, mode);
+		app.use(require('./markup.js'));
 		break;
 }
 

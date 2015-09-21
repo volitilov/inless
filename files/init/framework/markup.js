@@ -1,12 +1,15 @@
-var ejs = require('cejs');
+import fs from 'fs';
+import path from 'path';
+import ejs from 'cejs';
+import express from 'express';
+import Logger from 'logger';
+
 var routes = require('./../configs/routes.json');
 var app = require('./../configs/application.json');
 
-import Logger from 'logger';
 var logger = Logger.getLogger('markup');
 
-import fs from 'fs';
-import path from 'path';
+var router = express.Router();
 
 var template = fs.readFileSync(path.resolve(`./application${app.markup.template}`)).toString();
 
@@ -22,11 +25,12 @@ var render = function(route, data, cb) {
 	.replace('%style%', `<link rel="stylesheet" href="${app.style.bundle}" charset="utf-8" />`)
 	.replace('%script%', `<script type="text/javascript"></script>`);
 }
-export default function(app) {
-	routes.pages.forEach((route, i)=> {
-		app.get(route.path, function(req, res) {
-			res.end(render(route, req.query));
-		});
+
+
+routes.pages.forEach((route, i)=> {
+	router.get(route.path, function(req, res) {
+		res.end(render(route, req.query));
 	});
-	return app;
-}
+});
+
+module.exports = router;

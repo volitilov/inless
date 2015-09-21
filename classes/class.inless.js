@@ -24,19 +24,19 @@ var inLess = (function() {
 			var fields = [{
 				name: "name",
 				default: "project",
-				query: "Enter application name"
+				query: "Application name"
 			}, {
 				name: "version",
 				default: "0.0.1",
-				query: "Enter application version"
+				query: "Application version"
 			}, {
 				name: "description",
 				default: "",
-				query: "Enter application description"
+				query: "Application description"
 			}, {
 				name: "author",
 				default: "root@localhost",
-				query: "Enter application author"
+				query: "Application author"
 			}];
 			var config = {};
 			var i = 0;
@@ -110,7 +110,17 @@ var inLess = (function() {
 				cfs.mkdir('./application/components/'+name);
 				var extractFiles = function() {
 					cfs.untar('$FILES/component/component.tar.gz', './application/components/'+name+'/', function(err) {
-						console.log('complete');
+						setTimeout(function() {
+
+								var pkg = JSON.parse(cfs.readFile('./package.json'));
+								for (var i in data) {
+									if (data.hasOwnProperty(i)) {
+										pkg[i] = data[i];
+									}
+								}
+								cfs.writeFile('./package.json', JSON.stringify(pkg, true, '\t'));
+							console.log('complete');
+						}, 1000)
 					});
 				}
 				extractFiles();

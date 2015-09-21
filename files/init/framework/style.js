@@ -1,11 +1,16 @@
-import less from 'less';
-import path from 'path';
 import fs from 'fs';
-
+import path from 'path';
+import express from 'express';
+import less from 'less';
 import Logger from 'logger';
+
 var logger = Logger.getLogger('styles');
 
-//var mode = process.argv[2];
+var router = express.Router();
+
+var mode = process.argv[2] || 'markup';
+
+var appConfig = require('./../configs/application.json');
 
 
 var getComponents = function() {
@@ -47,6 +52,20 @@ var getLevels = function() {
 	return data;
 }
 
+var compileProject = function(dir) {
+	var getContent = function(prnt, pth) {
+		var p = path.resolve(prnt, pth);
+		var source = fs.readFileSync(p).toString();
+		var a = source.match(/@import\s?\(\s?less\s?\)\s?(?:\"|\')?([^\'\"\;]+)(?:\"|\')?\;?/i);
+		if (a) {
+			var inSource = getContent(path.parse(p).dir, a[1]);
+			source = source.replace(/@import\s?\(\s?less\s?\)\s?(?:\"|\')?([^\'\"\;]+)(?:\"|\')?\;?/i, inSource);
+		}
+		return source;
+	}
+	return getContent(dir, './index.less');
+}
+
 
 var make = function() {
 	var basics = fs.readFileSync(path.resolve(`./application/basics/markup/style/index.less`)).toString();
@@ -77,12 +96,12 @@ var make = function() {
 		componentsLevels += `@media @media-${level.name} {${cmps}}`;
 	});
 	components.forEach(function(comp, i) {
-		var str = fs.readFileSync(path.resolve(`./application/components/${comp}/markup/style/index.less`)).toString();
-		componentsBody += `.c-${comp}, .com-${comp}, .comp-${comp}, .component-${comp}{${levelsLocal} ${str}}`;
+		var source = compileProject(`./application/components/${comp}/markup/style/`);
+		componentsBody += `.c-${comp}, .com-${comp}, .comp-${comp}, .component-${comp}{${levelsLocal} ${source}}`;
 	});
 	modificators.forEach(function(mod, i) {
-		var str = fs.readFileSync(path.resolve(`./application/modificators/${mod}/markup/index.less`)).toString();
-		modificatorsBody += `.m-${mod}, .mod-${mod}, .modificator-${mod} {${levelsLocal} ${str}}`;
+		var source = compileProject(`./application/modificators/${mod}/markup/`);
+		modificatorsBody += `.m-${mod}, .mod-${mod}, .modificator-${mod} {${levelsLocal} ${source}}`;
 	});
 	return `${basics} .application { ${head} ${modificatorsBody} ${modificatorsLevels} ${componentsBody} ${componentsLevels} }`;
 }
@@ -109,14 +128,13 @@ var render = function(mode, cb) {
 	}
 }
 
-var appConfig = require('./../configs/application.json');
 
-export default function(app, mode) {
-	app.use(appConfig.style.bundle || '/bundle.css', function(req, res) {
-		render(mode, (bundle) => {
-			res.header("Content-type", "text/css");
-			res.end(bundle);
-		});
+router.use(appConfig.style.bundle || '/bundle.css', function(req, res) {
+	render(mode, (bundle) => {
+		res.header("Content-type", "text/css");
+		res.end(bundle);
 	});
-	return app;
-}
+});
+
+
+module.exports = router;

@@ -1,12 +1,13 @@
 import plugins from 'plugins';
 import express from 'express';
 import Logger from 'logger';
+import Session from 'plugins/session.js';
 
 var logger = Logger.getLogger('express.rpc');
 
-
+var xRouter = express.Router();
 var router = express.Router();
-import Session from 'plugins/session.js';
+
 router.post('/:plugin/:method', (req, res, next)=> {
 	var session = new Session(req.session);
 	if(plugins[req.params.plugin] && plugins[req.params.plugin][req.params.method]) {
@@ -40,4 +41,6 @@ router.post('/:plugin/:method', (req, res, next)=> {
 	}
 });
 
-module.exports = router;
+xRouter.use('/rpc', router);
+
+module.exports = xRouter;
