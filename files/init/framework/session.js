@@ -1,6 +1,6 @@
 
-
-const crednt = require('./../configs/credentials.json');
+var configs = require('configs');
+var crednt = configs('credentials');
 
 var session = require("express-session")({
 	name: crednt.session.name,

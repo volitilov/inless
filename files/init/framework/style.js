@@ -8,10 +8,11 @@ var logger = Logger.getLogger('styles');
 
 var router = express.Router();
 
-var mode = process.argv[2] || 'markup';
+import mode from 'startmode';
 
-var appConfig = require('./../configs/application.json');
 
+var configs = require('configs');
+var appConfig = configs('application');
 
 var getComponents = function() {
 	var data = [];
@@ -39,7 +40,7 @@ var getModificators = function() {
 
 var getLevels = function() {
 	var data = [];
-	var levels = require('./../configs/style.json').levels;
+	var levels = appConfig.levels;
 	for (var i in levels) {
 		if (levels.hasOwnProperty(i)) {
 			data.push({
@@ -63,13 +64,13 @@ var compileProject = function(dir) {
 		}
 		return source;
 	}
-	return getContent(dir, './index.less');
+	return getContent(dir, `./${appConfig.style.componentIndex||'index.less'}`);
 }
 
 
 var make = function() {
-	var basics = fs.readFileSync(path.resolve(`./application/basics/markup/style/index.less`)).toString();
-	basics += fs.readFileSync(path.resolve(`./application/basics/markup/style/variables.less`)).toString();
+	var basics = fs.readFileSync(path.join(`./application/`, appConfig.style.custom)).toString();
+	basics += fs.readFileSync(path.join(`./application/`, appConfig.style.variables)).toString();
 	var head = '';
 	var modificatorsBody = "";
 	var modificatorsLevels = "";
@@ -129,7 +130,7 @@ var render = function(mode, cb) {
 }
 
 
-router.use(appConfig.style.bundle || '/bundle.css', function(req, res) {
+router.use(appConfig.style.bundleUrl || '/bundle.css', function(req, res) {
 	render(mode, (bundle) => {
 		res.header("Content-type", "text/css");
 		res.end(bundle);

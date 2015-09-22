@@ -3,26 +3,23 @@
 require('babel/polyfill');
 require('isomorphic-fetch');
 
-var path = require('path');
-
 // import createBrowserHistory from 'history/lib/createBrowserHistory'
 // let history = createBrowserHistory();
 
 var ___ = function() {
-	require('./**/*.jsx', { glob: true });
+	require('./../application/**/*.jsx', { glob: true });
 };
+
 
 var React = require('react/addons');
 var Router = require('react-router');
 
 var xRouter = require('reactRouter');
 
-var appConf = require('./../configs/application.json');
 
 
-var ___ = function() {
-	require('./../application/**/*.jsx', { glob: true });
-};
+var configs = require('configs');
+var appConf = configs('application');
 
 var layout = require('./../application'+appConf.react.layout);
 

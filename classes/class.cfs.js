@@ -80,7 +80,7 @@ var fileSystem = (function() {
 		},
 		untar: function(_in, _out, cb) {
 			cb = cb||function(){};
-			console.log('	extract', this._lNrlm(_in), 'in to', this._pNrlm(_out));
+			console.log('	extract', path.parse(this._lNrlm(_in)).name, 'to', this._pNrlm(_out));
 			tgz().extract(this._lNrlm(_in), this._pNrlm(_out), function(err) {
 				cb(err);
 			});

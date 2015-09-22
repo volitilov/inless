@@ -4,6 +4,7 @@
 
 export default {
 	render() {
-		return <div>Route</div>;
+		var Yield = this.getYield();
+		return <div>Route %name% <Yield/></div>;
 	}
 };

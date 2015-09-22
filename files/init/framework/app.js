@@ -1,14 +1,15 @@
-
 import http from 'http';
 import process from 'process';
-var mode = process.argv[2]||'production';
-
 import app from './express.js';
 
-const config = require('./../configs/server.json');
+
+import mode from 'startmode';
+
+var configs = require('configs');
+var config = configs('server');
 
 let server = require('http').Server(app);
 
-server.listen(config[mode].port, config[mode].host, ()=> {
-	console.log(`start on ${config[mode].host}:${config[mode].port}`);
+server.listen(config.mods[mode].port || 8080, config.mods[mode].host || 'localhost', () => {
+	console.log(`server started on ${config.mods[mode].host||'localhost'}:${config.mods[mode].port||8080} in ${mode} mode`);
 });

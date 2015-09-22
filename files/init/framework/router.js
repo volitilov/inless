@@ -1,8 +1,9 @@
 
 import path from 'path';
 
-const routes = require('./../configs/routes.json');
-const config = require('./../configs/application.json');
+var configs = require('configs');
+var routes = configs('routes');
+var config = configs('application');
 
 let router = require('./node_modules/router');
 

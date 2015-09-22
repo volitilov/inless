@@ -4,11 +4,15 @@
 		"template": "/basics/react/_template.html"
 	},
 	"markup": {
-		"template": "/basics/_template.html"
+		"template": "/basics/markup/_template.html",
+		"componentIndex": "index.ejs"
 	},
 	"style": {
-		"bundle": "/bundle.css",
-		"rootSelector": ".application"
+		"bundleUrl": "/bundle.css",
+		"custom": "/basics/style/index.less",
+		"variables": "/basics/style/variables.less",
+		"rootSelector": ".application",
+		"componentIndex": "index.less"
 	},
 	"browser": {
 		"bundle": "/bundle.js"

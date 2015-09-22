@@ -4,6 +4,6 @@
 
 export default {
 	render() {
-		return <div>Component</div>;
+		return <div className="comp-%name%">Component %name%</div>;
 	}
 }

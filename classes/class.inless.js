@@ -111,16 +111,19 @@ var inLess = (function() {
 				var extractFiles = function() {
 					cfs.untar('$FILES/component/component.tar.gz', './application/components/'+name+'/', function(err) {
 						setTimeout(function() {
-
-								var pkg = JSON.parse(cfs.readFile('./package.json'));
-								for (var i in data) {
-									if (data.hasOwnProperty(i)) {
-										pkg[i] = data[i];
-									}
-								}
-								cfs.writeFile('./package.json', JSON.stringify(pkg, true, '\t'));
+							var ejs = cfs.readFile('./application/components/'+name+'/markup/view/index.ejs');
+							cfs.writeFile('./application/components/'+name+'/markup/view/index.ejs', ejs.split('%name%').join(name));
+							var react = cfs.readFile('./application/components/'+name+'/react/index.jsx');
+							cfs.writeFile('./application/components/'+name+'/react/index.jsx', react.split('%name%').join(name));
+							var child = child_process.exec('cd ./application/components/'+name+'/react && npm i');
+							child.stdout.on('data', function(data) {
+								console.log(data.toString());
+							});
+							child.on('close', function(code) {
+								complete(config);
+							});
 							console.log('complete');
-						}, 1000)
+						}, 1000);
 					});
 				}
 				extractFiles();
@@ -150,6 +153,12 @@ var inLess = (function() {
 					path: pth,
 					title: title
 				});
+
+				var ejs = cfs.readFile('./application/routes/'+name+'/markup/index.ejs');
+				cfs.writeFile('./application/routes/'+name+'/markup/index.ejs', ejs.split('%name%').join(name));
+				var ejs = cfs.readFile('./application/routes/'+name+'/react/handler.ejs');
+				cfs.writeFile('./application/routes/'+name+'/react/handler.ejs', ejs.split('%name%').join(name));
+
 				cfs.writeFile('./configs/routes.json', JSON.stringify(config, true, '	'));
 				extractFiles();
 			}
@@ -191,9 +200,27 @@ var inLess = (function() {
 			}
 			a();
 		},
-		start: function() {
-			console.log('start application');
-			var child = child_process.exec('node index.js');
+		start: function(mode) {
+			switch (mode) {
+				case "dv":
+				case "dev":
+				case "development":
+					mode = 'development';
+					break;
+				case "mk":
+				case "markup":
+					mode = 'markup';
+					break;
+				case "ds":
+				case "des":
+				case "design":
+					mode = 'design';
+					break;
+				default:
+					mode = 'production';
+			}
+			console.log('starting project in '+mode+' mode...');
+			var child = child_process.exec('node index.js ' + mode);
 			child.stdout.on('data', function(data) {
 				console.log(data.toString());
 			});

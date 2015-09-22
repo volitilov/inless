@@ -6,7 +6,7 @@ import multer from 'multer';
 import compression from 'compression';
 
 import process from 'process';
-var mode = process.argv[2] || 'production';
+import mode from 'startmode';
 
 import Logger from 'logger';
 
@@ -17,10 +17,13 @@ var cookieParser = require('cookie-parser')();
 
 var session = require('./session.js');
 
+var configs = require('configs');
+var servConfig = configs('server');
+
 var app = express();
 app.disable('x-powered-by');
 app.use(compression({
-	level: 9
+	level: servConfig.compression || 9
 }));
 app.use(eLogger('dev'));
 app.use(bodyParser.json());
@@ -28,7 +31,7 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 app.use(multer({
-	dest: './../tmp/'
+	dest: path.resolve('./../', servConfig.temp || './tmp/')
 }));
 app.use(express.static(path.join(__dirname, './../application/static')));
 app.use(cookieParser);
@@ -52,7 +55,6 @@ app.use((req, res, next) => {
 	next();
 });
 require('plugins/singleton.js').app = app;
-
 
 app.use(require('./style.js'));
 
