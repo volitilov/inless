@@ -3,6 +3,8 @@
 require('babel/polyfill');
 require('isomorphic-fetch');
 
+var path = require('path');
+
 // import createBrowserHistory from 'history/lib/createBrowserHistory'
 // let history = createBrowserHistory();
 
@@ -15,9 +17,14 @@ var Router = require('react-router');
 
 var xRouter = require('reactRouter');
 
-var appConf = require('./../../configs/application.json');
+var appConf = require('./../configs/application.json');
 
-var layout = require('./layout.jsx');
+
+var ___ = function() {
+	require('./../application/**/*.jsx', { glob: true });
+};
+
+var layout = require('./../application'+appConf.react.layout);
 
 var routes = xRouter.rxReact(layout);
 

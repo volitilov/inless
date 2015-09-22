@@ -1,8 +1,7 @@
 {
 	"react": {
-		"layout": "/basics/layout.jsx",
-		"template": "/basics/_template.html",
-		"browser": "/basics/browser.jsx"
+		"layout": "/basics/react/layout.jsx",
+		"template": "/basics/react/_template.html"
 	},
 	"markup": {
 		"template": "/basics/_template.html"
