@@ -20,6 +20,7 @@ switch (command) {
 	case "start":
 		inless.start(args[3]);
 		break;
+	case "new":
 	case "create":
 		switch (args[3]) {
 			case "com":
@@ -34,6 +35,10 @@ switch (command) {
 			case "mod":
 			case "modificator":
 				inless.createModificator(args[4]);
+				break;
+			case "plg":
+			case "plugin":
+				inless.createPlugin(args[4]);
 				break;
 			default:
 		}

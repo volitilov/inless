@@ -57,10 +57,10 @@ var compileProject = function(dir) {
 	var getContent = function(prnt, pth) {
 		var p = path.resolve(prnt, pth);
 		var source = fs.readFileSync(p).toString();
-		var a = source.match(/@import\s?\(\s?less\s?\)\s?(?:\"|\')?([^\'\"\;]+)(?:\"|\')?\;?/i);
+		var a = source.match(/@import\s?\(\s?(?:less|css)\s?\)\s?(?:\"|\')?([^\'\"\;]+)(?:\"|\')?\;?/i);
 		if (a) {
 			var inSource = getContent(path.parse(p).dir, a[1]);
-			source = source.replace(/@import\s?\(\s?less\s?\)\s?(?:\"|\')?([^\'\"\;]+)(?:\"|\')?\;?/i, inSource);
+			source = source.replace(/@import\s?\(\s?(?:less|css)\s?\)\s?(?:\"|\')?([^\'\"\;]+)(?:\"|\')?\;?/i, inSource);
 		}
 		return source;
 	}

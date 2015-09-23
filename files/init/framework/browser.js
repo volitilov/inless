@@ -21,6 +21,8 @@ var xRouter = require('reactRouter');
 var configs = require('configs');
 var appConf = configs('application');
 
+var plugins = require('plugins');
+
 var layout = require('./../application'+appConf.react.layout);
 
 var routes = xRouter.rxReact(layout);

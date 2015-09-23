@@ -103,6 +103,48 @@ var inLess = (function() {
 				});
 			}
 		},
+		createPlugin: function(name) {
+			var defName = 'plugin'+((Math.random()*1e3)|0);
+			var x = function() {
+				console.log('create Plugin ' + name);
+				cfs.mkdir('./application/plugins/'+name);
+				var extractFiles = function() {
+					cfs.untar('$FILES/plugin/plugin.tar.gz', './application/plugins/'+name+'/', function(err) {
+						setTimeout(function() {
+							var plgConf = JSON.parse(cfs.readFile('./application/plugins/'+name+'/configs.json'));
+							cfs.rm('./application/plugins/'+name+'/configs.json');
+							var appConf = JSON.parse(cfs.readFile('./configs/plugins.json'));
+							var appCrdt = JSON.parse(cfs.readFile('./configs/credentials.json'));
+							appConf[name] = plgConf.configs||{};
+							appCrdt[name] = plgConf.configs||{};
+							cfs.writeFile('./configs/plugins.json', JSON.stringify(appConf, true, '	'));
+							cfs.writeFile('./configs/credentials.json', JSON.stringify(appCrdt, true, '	'));
+							// -----
+							var server = cfs.readFile('./application/plugins/'+name+'/server/index.js');
+							cfs.writeFile('./application/plugins/'+name+'/server/index.js', server.split('%name%').join(name));
+							var client = cfs.readFile('./application/plugins/'+name+'/client/index.js');
+							cfs.writeFile('./application/plugins/'+name+'/client/index.js', client.split('%name%').join(name));
+							var child = child_process.exec('cd ./application/plugins/'+name+'/ && npm i');
+							child.stdout.on('data', function(data) {
+								console.log(data.toString());
+							});
+							child.on('close', function(code) {
+								console.log('complete');
+							});
+						}, 1000);
+					});
+				}
+				extractFiles();
+			}
+			if(name) {
+				x();
+			} else {
+				cfs.readLine('plugin name (default "'+defName+'"):', function(answer) {
+					name = answer||defName;
+					x();
+				});
+			}
+		},
 		createComponent: function(name) {
 			var defName = 'comp'+((Math.random()*1000)|0);
 			var x = function() {
@@ -120,9 +162,8 @@ var inLess = (function() {
 								console.log(data.toString());
 							});
 							child.on('close', function(code) {
-								complete(config);
+								console.log('complete');
 							});
-							console.log('complete');
 						}, 1000);
 					});
 				}

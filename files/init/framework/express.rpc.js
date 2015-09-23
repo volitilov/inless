@@ -10,9 +10,9 @@ var router = express.Router();
 
 router.post('/:plugin/:method', (req, res, next)=> {
 	var session = new Session(req.session);
-	if(plugins[req.params.plugin] && plugins[req.params.plugin][req.params.method]) {
+	if(plugins.list[req.params.plugin] && plugins.list[req.params.plugin][req.params.method]) {
 		logger.info(`${req.params.plugin}.${req.params.method}`, req.body||req.query||{});
-		plugins[req.params.plugin][req.params.method](req.body||req.query||{}, session).then((data)=> {
+		plugins.list[req.params.plugin][req.params.method](req.body||req.query||{}, session).then((data)=> {
 			session = session.export();
 			req.session.account = session.account;
 			req.session.data = session.data;
@@ -41,6 +41,7 @@ router.post('/:plugin/:method', (req, res, next)=> {
 	}
 });
 
+xRouter.use(plugins.router);
 xRouter.use('/rpc', router);
 
 module.exports = xRouter;
