@@ -1,23 +1,24 @@
 {
 	"temp": "./tmp",
 	"compression": 9,
+	"session": {
+		"name": "session",
+		"secret": "GmmBBIhA6elIhmmcyaPYVcrDpMMPaVQT"
+	},
 	"mods": {
 		"production": {
 			"host": "localhost",
 			"port": 8080
 		},
 		"development": {
-			"compression": 9,
 			"host": "localhost",
 			"port": 8080
 		},
 		"markup": {
-			"compression": 9,
 			"host": "localhost",
 			"port": 8080
 		},
 		"design": {
-			"compression": 9,
 			"host": "localhost",
 			"port": 8080
 		}

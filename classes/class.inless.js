@@ -185,22 +185,24 @@ var inLess = (function() {
 				cfs.mkdir('./application/routes/'+name);
 				var extractFiles = function() {
 					cfs.untar('$FILES/route/route.tar.gz', './application/routes/'+name+'/', function(err) {
-						console.log('complete');
+						setTimeout(function() {
+							var config = JSON.parse(cfs.readFile('./configs/routes.json').toString());
+							config.pages.push({
+								name: name,
+								path: pth,
+								title: title
+							});
+
+							var ejs = cfs.readFile('./application/routes/'+name+'/markup/index.ejs');
+							cfs.writeFile('./application/routes/'+name+'/markup/index.ejs', ejs.split('%name%').join(name));
+							var jsx = cfs.readFile('./application/routes/'+name+'/react/handler.jsx');
+							cfs.writeFile('./application/routes/'+name+'/react/handler.jsx', jsx.split('%name%').join(name));
+
+							cfs.writeFile('./configs/routes.json', JSON.stringify(config, true, '	'));
+							console.log('complete');
+						}, 1000);
 					});
 				}
-				var config = JSON.parse(cfs.readFile('./configs/routes.json').toString());
-				config.pages.push({
-					name: name,
-					path: pth,
-					title: title
-				});
-
-				var ejs = cfs.readFile('./application/routes/'+name+'/markup/index.ejs');
-				cfs.writeFile('./application/routes/'+name+'/markup/index.ejs', ejs.split('%name%').join(name));
-				var ejs = cfs.readFile('./application/routes/'+name+'/react/handler.ejs');
-				cfs.writeFile('./application/routes/'+name+'/react/handler.ejs', ejs.split('%name%').join(name));
-
-				cfs.writeFile('./configs/routes.json', JSON.stringify(config, true, '	'));
 				extractFiles();
 			}
 			var a = function() {
@@ -216,8 +218,8 @@ var inLess = (function() {
 				if(pth) {
 					return c();
 				}
-				cfs.readLine('route path (default "/"): ', function(answer) {
-					pth = answer||'/';
+				cfs.readLine('route path (default "/'+defName+'"): ', function(answer) {
+					pth = answer||'/'+defName;
 					c();
 				});
 			}

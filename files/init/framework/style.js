@@ -13,6 +13,7 @@ import mode from 'startmode';
 
 var configs = require('configs');
 var appConfig = configs('application');
+var styleConfig = configs('style');
 
 var getComponents = function() {
 	var data = [];
@@ -40,7 +41,7 @@ var getModificators = function() {
 
 var getLevels = function() {
 	var data = [];
-	var levels = appConfig.levels;
+	var levels = styleConfig.levels;
 	for (var i in levels) {
 		if (levels.hasOwnProperty(i)) {
 			data.push({

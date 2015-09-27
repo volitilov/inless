@@ -1,11 +1,11 @@
 import path from 'path';
+import process from 'process';
 import express from 'express';
 import eLogger from 'morgan';
 import bodyParser from 'body-parser';
 import multer from 'multer';
 import compression from 'compression';
 
-import process from 'process';
 import mode from 'startmode';
 
 import Logger from 'logger';
@@ -54,7 +54,6 @@ app.use((req, res, next) => {
 	}
 	next();
 });
-require('plugins/singleton.js').app = app;
 
 app.use(require('./style.js'));
 

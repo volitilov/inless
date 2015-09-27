@@ -1,10 +1,10 @@
 
 var configs = require('configs');
-var crednt = configs('credentials');
+var server = configs('server');
 
 var session = require("express-session")({
-	name: crednt.session.name,
-	secret: crednt.session.secret,
+	name: server.session.name,
+	secret: server.session.secret,
 	saveUninitialized: true,
 	resave: true,
 	cookie: {
