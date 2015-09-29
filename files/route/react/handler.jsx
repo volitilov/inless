@@ -1,7 +1,7 @@
 
-import React from 'react/addons';
+import React from 'react';
 // import comp from 'components';
-// var Header = comp.get('header');
+// var Header = comp('Header');
 
 export default {
 	render() {
