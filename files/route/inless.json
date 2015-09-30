@@ -1,0 +1,8 @@
+{
+	"name": "%name%",
+	"dependences": {
+		"plugins":[],
+		"modificators":[],
+		"components":[]
+	}
+}
