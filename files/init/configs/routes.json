@@ -6,5 +6,13 @@
 			"name": "home"
 		}
 	],
-	"errors": []
+	"errors": [
+		{
+			"status": "404",
+			"redirect": false,
+			"path": "/error/404",
+			"name": "error404",
+			"title": "Not found"
+		}
+	]
 }
