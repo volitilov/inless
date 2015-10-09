@@ -20,6 +20,7 @@ switch (command) {
 	case "clear":
 		inless.clear();
 		break;
+	case "run":
 	case "start":
 		inless.start(args[3]);
 		break;
@@ -42,6 +43,9 @@ switch (command) {
 			case "plg":
 			case "plugin":
 				inless.createPlugin(args[4]);
+				break;
+			case "api":
+				inless.createApi(args[4], args[5]);
 				break;
 			default:
 		}

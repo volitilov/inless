@@ -1,7 +1,9 @@
 {
 	"react": {
 		"layout": "/basics/react/layout.jsx",
-		"template": "/basics/react/_template.html"
+		"template": "/basics/react/_template.html",
+		"APIPath": "/api",
+		"RPCPath": "/rpc"
 	},
 	"markup": {
 		"layout": "/basics/markup/layout.ejs",

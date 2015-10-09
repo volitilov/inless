@@ -61,6 +61,7 @@ switch (mode) {
 	case "production":
 	case "development":
 		app.use(require('./express.rpc.js'));
+		app.use(require('./express.api.js'));
 		app.use(require('./router.js'));
 		break;
 	case "markup":

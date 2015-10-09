@@ -116,13 +116,12 @@ var inLess = (function() {
 		clear: function() {
 			console.log('clear project');
 			var folders = function() {
-				cfs.rm('./configs');
-				cfs.rm('./application');
 				cfs.rm('./framework');
 				cfs.rm('./node_modules');
 				cfs.rm('./tmp');
 				cfs.rm('./index.js');
 				cfs.rm('./package.json');
+				cfs.rm('./.gitignore');
 				console.log('complete');
 			}
 			cfs.queryLine('Realy?', function(answer) {
@@ -167,7 +166,7 @@ var inLess = (function() {
 							var appConf = JSON.parse(cfs.readFile('./configs/plugins.json'));
 							var appCrdt = JSON.parse(cfs.readFile('./configs/credentials.json'));
 							appConf[name] = plgConf.configs||{};
-							appCrdt[name] = plgConf.configs||{};
+							appCrdt[name] = plgConf.credentials||{};
 							cfs.writeFile('./configs/plugins.json', JSON.stringify(appConf, true, '	'));
 							cfs.writeFile('./configs/credentials.json', JSON.stringify(appCrdt, true, '	'));
 							// -----
@@ -193,6 +192,65 @@ var inLess = (function() {
 				cfs.readLine('plugin name (default "'+defName+'"):', function(answer) {
 					name = answer||defName;
 					x();
+				});
+			}
+		},
+		createApi: function(name, method, pth) {
+			var defName = 'api'+((Math.random()*1e3)|0);
+			var x = function() {
+				console.log('create API ' + name);
+				cfs.mkdir('./application/api/'+name);
+				var extractFiles = function() {
+					cfs.untar('$FILES/api/api.tar.gz', './application/api/'+name+'/', function(err) {
+						setTimeout(function() {
+							var plgConf = JSON.parse(cfs.readFile('./application/api/'+name+'/configs.json'));
+							cfs.rm('./application/api/'+name+'/configs.json');
+							var apiConf = JSON.parse(cfs.readFile('./configs/api.json'));
+							apiConf[name] = {
+								method: method || plgConf.configs.method,
+								path: pth || plgConf.configs.path
+							};
+							cfs.writeFile('./configs/api.json', JSON.stringify(apiConf, true, '	'));
+							// -----
+							var server = cfs.readFile('./application/api/'+name+'/index.js');
+							cfs.writeFile('./application/api/'+name+'/index.js', server.split('%name%').join(name));
+							var child = child_process.exec('cd ./application/api/'+name+'/ && npm i');
+							child.stdout.on('data', function(data) {
+								console.log(data.toString());
+							});
+							child.on('close', function(code) {
+								console.log('complete');
+							});
+						}, 1000);
+					});
+				}
+				extractFiles();
+			}
+			if(pth) {
+				x();
+			} else if(method) {
+				cfs.readLine('api path (default "/'+defName+'"):', function(answer) {
+					pth = answer||'/'+defName;
+					x();
+				});
+			} else if(name) {
+				cfs.readLine('api method (default "GET"):', function(answer) {
+					method = answer||'GET';
+					cfs.readLine('api path (default "/'+defName+'"):', function(answer) {
+						pth = answer||'/'+defName;
+						x();
+					});
+				});
+			} else {
+				cfs.readLine('api name (default "'+defName+'"):', function(answer) {
+					name = answer||defName;
+					cfs.readLine('api method (default "GET"):', function(answer) {
+						method = answer||'GET';
+						cfs.readLine('api path (default "/'+defName+'"):', function(answer) {
+							pth = answer||'/'+defName;
+							x();
+						});
+					});
 				});
 			}
 		},
