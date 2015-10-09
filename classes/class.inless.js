@@ -18,6 +18,22 @@ var npmi = function(pth, cb) {
 	});
 };
 
+var iList = function(folder, cb1) {
+	cb1 = cb1 || function() {};
+	if(!folder) return cb1();
+	var _r = folder.split('%name%')[0];
+	var list = cfs.getDirList('./'+_r);
+	var i = 0;
+	if(!list.length) return cb1();
+	list.forEach(function(name) {
+		npmi(('./'+folder).replace('%name%', name), function() {
+			if(++i == list.length) {
+				cb1();
+			}
+		});
+	});
+};
+
 var inLess = (function() {
 	var Class = function() {};
 	Class.prototype = {
@@ -81,21 +97,7 @@ var inLess = (function() {
 				cfs.untar('$FILES/restore/restore.tar.gz', './', function(err) {
 					setTimeout(function() {
 						npmi('./', function() {
-							var iList = function(folder, cb1) {
-								cb1 = cb1 || function() {};
-								if(!folder) return cb1();
-								var _r = folder.split('%name%')[0];
-								var list = cfs.getDirList('./'+_r);
-								var i = 0;
-								if(!list.length) return cb1();
-								list.forEach(function(name) {
-									npmi(('./'+folder).replace('%name%', name), function() {
-										if(++i == list.length) {
-											cb1();
-										}
-									});
-								});
-							};
+							cfs.rename('./tmp.gitignore', './.gitignore');
 							iList('application/plugins/%name%/', function() {
 								iList('application/components/%name%/react/', function() {
 									complete();

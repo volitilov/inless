@@ -56,6 +56,13 @@ var fileSystem = (function() {
 			fs.mkdirSync(name);
 			return true;
 		},
+		rename: function (_old, _new) {
+			_old = this._pNrlm(_old);
+			_new = this._pNrlm(_new);
+			console.log('	rename:', _old, 'to', _new);
+			fs.renameSync(_old, _new);
+			return true;
+		},
 		readLine: function (query, cb) {
 			var rl = readline.createInterface({
 				input: process.stdin,
