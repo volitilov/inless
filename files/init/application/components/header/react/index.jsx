@@ -1,9 +1,10 @@
 
+import React from 'react';
 // import comp from 'components';
-// var Header = comp.get('header');
+// var Header = comp('Header');
 
 export default {
 	render() {
-		return <div>Component</div>;
+		return <div className="comp-%name%">Component %name%</div>;
 	}
 }

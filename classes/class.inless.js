@@ -3,19 +3,31 @@ var cFS = require("./class.cfs.js");
 var cfs = new cFS();
 var child_process = require('child_process');
 
+
+var npmi = function(pth, cb) {
+	pth = pth || './';
+	cb = cb || function() {};
+	console.log('	install '+ pth);
+	var child = child_process.exec('cd '+pth+' && npm i');
+	child.stdout.on('data', function(data) {
+		console.log('	installed.');
+		// console.log(data.toString());
+	});
+	child.on('close', function(code) {
+		cb();
+	});
+};
+
 var inLess = (function() {
 	var Class = function() {};
 	Class.prototype = {
 		init: function() {
+			var $ = this;
 			console.log('init project');
 			var extractFiles = function() {
 				cfs.untar('$FILES/init/init.tar.gz', './', function(err) {
 					setTimeout(function() {
-						var child = child_process.exec('npm i');
-						child.stdout.on('data', function(data) {
-							console.log(data.toString());
-						});
-						child.on('close', function(code) {
+						$.restore(function() {
 							complete(config);
 						});
 					}, 1000);
@@ -61,6 +73,43 @@ var inLess = (function() {
 				cfs.writeFile('./package.json', JSON.stringify(pkg, true, '\t'));
 				console.log('complete');
 			}
+		},
+		restore: function(cb) {
+			cb = cb || function() {};
+			console.log('restore project');
+			var extractFiles = function() {
+				cfs.untar('$FILES/restore/restore.tar.gz', './', function(err) {
+					setTimeout(function() {
+						npmi('./', function() {
+							var iList = function(folder, cb1) {
+								cb1 = cb1 || function() {};
+								if(!folder) return cb1();
+								var _r = folder.split('%name%')[0];
+								var list = cfs.getDirList('./'+_r);
+								var i = 0;
+								if(!list.length) return cb1();
+								list.forEach(function(name) {
+									npmi(('./'+folder).replace('%name%', name), function() {
+										if(++i == list.length) {
+											cb1();
+										}
+									});
+								});
+							};
+							iList('application/plugins/%name%/', function() {
+								iList('application/components/%name%/react/', function() {
+									complete();
+								});
+							});
+						});
+					}, 1000);
+				});
+			}
+			var complete = function() {
+				cb();
+				console.log('complete');
+			}
+			extractFiles();
 		},
 		clear: function() {
 			console.log('clear project');

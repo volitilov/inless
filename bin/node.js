@@ -11,6 +11,9 @@ var command = args[2];
 // console.log(args);
 
 switch (command) {
+	case "restore":
+		inless.restore();
+		break;
 	case "init":
 		inless.init();
 		break;

@@ -16,6 +16,18 @@ var fileSystem = (function() {
 			return this._pNrlm(name
 				.replace('$FILES', path.resolve(module.paths[1], '../files')));
 		},
+		getDirList: function(pth) {
+			pth = pth || pth;
+			var data = [];
+			var files = fs.readdirSync(path.resolve(pth));
+			files.forEach(function(file, index) {
+				var curPath = pth +'/' + file;
+				if (fs.lstatSync(curPath).isDirectory()) {
+					data.push(file);
+				}
+			});
+			return data;
+		},
 		rm: function(name) {
 			var deleteFolderRecursive = function(path) {
 				var files = [];
