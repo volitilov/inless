@@ -1,11 +1,21 @@
+import React from 'react';
+import side from 'side';
 
-import React from 'react/addons';
-
-// import comp from 'components';
-// var Header = comp.get('header');
+// import comps from 'components';
+// var Header = comps('header');
 
 export default {
 	render() {
-		return typeof window == 'undefined' ? <div>Server</div> : <div>Client</div>;
+		var name = 'Home';
+		return side(
+			()=> {
+				return <div>Route {name}. Server.</div>;
+			},
+			()=> {
+				return <div>Route {name}. Client.</div>;
+			},
+			true
+		);
 	}
 };
+
