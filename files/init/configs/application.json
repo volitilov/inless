@@ -4,6 +4,7 @@
 		"template": "/basics/react/_template.html"
 	},
 	"markup": {
+		"layout": "/basics/markup/layout.ejs",
 		"template": "/basics/markup/_template.html",
 		"componentIndex": "index.ejs"
 	},

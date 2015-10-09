@@ -14,7 +14,7 @@ var ___ = function() {
 var React = require('react/addons');
 var Router = require('react-router');
 
-var xRouter = require('reactRouter');
+var xRouter = require('router');
 
 
 

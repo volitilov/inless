@@ -17,7 +17,9 @@ var router = express.Router();
 var template = fs.readFileSync(path.resolve(`./application${appConfig.markup.template}`)).toString();
 
 var render = function(route, data, cb) {
+	var layout = fs.readFileSync(path.resolve(`./application/${appConfig.markup.layout}`)).toString();
 	var source = fs.readFileSync(path.resolve(`./application/routes/${route.name}/markup/${appConfig.markup.componentIndex}`)).toString();
+	source = layout.replace(/\<\s*\$Yield\s*\/\>/i, source);
 	var options = {
 		filename: path.resolve(`./application/routes/${route.name}/markup/${appConfig.markup.componentIndex}`),
 		compFilename: path.resolve(`./application`)
