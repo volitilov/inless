@@ -3,7 +3,8 @@
 		"layout": "/basics/react/layout.jsx",
 		"template": "/basics/react/_template.html",
 		"APIPath": "/api",
-		"RPCPath": "/rpc"
+		"RPCPath": "/rpc",
+		"preDataPath": "/preData"
 	},
 	"markup": {
 		"layout": "/basics/markup/layout.ejs",
