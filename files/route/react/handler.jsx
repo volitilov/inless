@@ -1,10 +1,18 @@
 
 import React from 'react';
-// import comp from 'components';
-// var Header = comp('Header');
-
+import side from 'side';
 export default {
 	render() {
-		return <div>Route %name%</div>;
+		var name = '%name%';
+		return side(
+			()=> {
+				return <div>Route {name}. Server.</div>;
+			},
+			()=> {
+				return <div>Route {name}. Client.</div>;
+			},
+			true
+		);
 	}
 };
+
