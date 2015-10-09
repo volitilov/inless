@@ -5,7 +5,7 @@ var configs = require('configs');
 var routes = configs('routes');
 var config = configs('application');
 
-let router = require('./node_modules/router');
+let router = require('router');
 
 let template = require('fs').readFileSync(path.join(__dirname, './../application',config.react.template)).toString();
 let Layout = require(path.join(__dirname, './../application', config.react.layout));

@@ -132,10 +132,15 @@ var render = function(mode, cb) {
 
 
 router.use(appConfig.style.bundleUrl || '/bundle.css', function(req, res) {
-	render(mode, (bundle) => {
-		res.header("Content-type", "text/css");
-		res.end(bundle);
-	});
+	try {
+		render(mode, (bundle) => {
+			res.header("Content-type", "text/css");
+			res.end(bundle);
+		});
+	} catch(e) {
+		logger.error(e);
+		res.end('500 Internal server error');
+	}
 });
 
 

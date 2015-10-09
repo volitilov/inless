@@ -35,7 +35,12 @@ var render = function(route, data, cb) {
 
 routes.pages.forEach((route, i)=> {
 	router.get(route.path, function(req, res) {
-		res.end(render(route, req.query));
+		try {
+			res.end(render(route, req.query));
+		} catch(e) {
+			logger.error(e);
+			res.end('500 Internal server error');
+		}
 	});
 });
 

@@ -13,35 +13,40 @@ var xRouter = express.Router();
 var router = express.Router();
 
 router.post('/:plugin/:method', (req, res, next)=> {
-	var session = new Session(req.session);
-	if(plugins.list[req.params.plugin] && plugins.list[req.params.plugin][req.params.method]) {
-		logger.info(`${req.params.plugin}.${req.params.method}`, req.body||req.query||{});
-		plugins.list[req.params.plugin][req.params.method](req.body||req.query||{}, session).then((data)=> {
-			session = session.export();
-			req.session.account = session.account;
-			req.session.data = session.data;
-			req.session.storage = session.storage;
-			res.json({
-				error: null,
-				response: data
+	try {
+		var session = new Session(req.session);
+		if(plugins.list[req.params.plugin] && plugins.list[req.params.plugin][req.params.method]) {
+			logger.info(`${req.params.plugin}.${req.params.method}`, req.body||req.query||{});
+			plugins.list[req.params.plugin][req.params.method](req.body||req.query||{}, session).then((data)=> {
+				session = session.export();
+				req.session.account = session.account;
+				req.session.data = session.data;
+				req.session.storage = session.storage;
+				res.json({
+					error: null,
+					response: data
+				});
+			}).catch((error)=> {
+				session = session.export();
+				req.session.account = session.account;
+				req.session.data = session.data;
+				req.session.storage = session.storage;
+				logger.error(error);
+				res.json({
+					error: error,
+					response: null
+				});
 			});
-		}).catch((error)=> {
-			session = session.export();
-			req.session.account = session.account;
-			req.session.data = session.data;
-			req.session.storage = session.storage;
-			logger.error(error);
+		} else {
+			logger.warn('Error: not fond method:', req.params);
 			res.json({
-				error: error,
+				error: 'not fond method',
 				response: null
 			});
-		});
-	} else {
-		logger.warn('Error: not fond method:', req.params);
-		res.json({
-			error: 'not fond method',
-			response: null
-		});
+		}
+	} catch(e) {
+		logger.error(e);
+		res.end('500 Internal server error');
 	}
 });
 

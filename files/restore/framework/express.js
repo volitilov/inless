@@ -55,22 +55,23 @@ app.use((req, res, next) => {
 	next();
 });
 
-app.use(require('./style.js'));
 
 switch (mode) {
 	case "production":
 	case "development":
+		app.use(require('./style.js'));
 		app.use(require('./express.rpc.js'));
 		app.use(require('./express.api.js'));
 		app.use(require('./router.js'));
 		break;
 	case "markup":
+		app.use(require('./style.js'));
 		app.use(require('./markup.js'));
 		break;
 }
 
 app.use((req, res, next) => {
-	res.end(':)');
+	res.end('400 Bad Request');
 });
 
 export default app;

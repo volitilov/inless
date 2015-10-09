@@ -30,8 +30,13 @@ for(var name in apiConfigs) {
 	}
 	var action = require(path.resolve(`./application/api/${name}/index.js`))||function(){};
 	router[method](api.path, (req, res, next)=> {
-		logger.info(`${req.path}`, req.body||req.query||{});
-		action(req, res, next);
+		try {
+			logger.info(`${req.path}`, req.body||req.query||{});
+			action(req, res, next);
+		} catch(e) {
+			logger.error(e);
+			res.end('500 Internal server error');
+		}
 	});
 }
 
