@@ -3,15 +3,15 @@
 require('babel/polyfill');
 require('isomorphic-fetch');
 
-// import createBrowserHistory from 'history/lib/createBrowserHistory'
-// let history = createBrowserHistory();
+var createBrowserHistory = require('history/lib/createBrowserHistory');
 
 var ___ = function() {
 	require('./../application/**/*.jsx', { glob: true });
 };
 
 
-var React = require('react/addons');
+var React = require('react');
+var ReactDOM = require('react-dom');
 var Router = require('react-router');
 
 var xRouter = require('router');
@@ -27,9 +27,5 @@ var layout = require('./../application'+appConf.react.layout);
 
 var routes = xRouter.rxReact(layout);
 
-Router.run(routes, Router.HistoryLocation, function(Root) {
-	React.render(React.createElement(Root, null), window.document.querySelector(appConf.style.rootSelector));
-});
+ReactDOM.render(React.createElement.apply(React, [Router.Router, {history: createBrowserHistory() }].concat(routes)), window.document.querySelector(appConf.style.rootSelector||'body'));
 
-
-// React.render(<Router history={history}>{routes}</Router>, window.document.querySelector(appConf.style.rootSelector));
