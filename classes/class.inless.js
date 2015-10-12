@@ -121,7 +121,7 @@ var inLess = (function() {
 		clear: function() {
 			console.log('clear project');
 			var folders = function() {
-				cfs.rm('./framework');
+				cfs.rm('./.inless');
 				cfs.rm('./node_modules');
 				cfs.rm('./tmp');
 				cfs.rm('./index.js');
