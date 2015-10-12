@@ -98,9 +98,14 @@ var inLess = (function() {
 					setTimeout(function() {
 						npmi('./', function() {
 							cfs.rename('./tmp.gitignore', './.gitignore');
+							console.log('	install plugins...');
 							iList('application/plugins/%name%/', function() {
-								iList('application/components/%name%/react/', function() {
-									complete();
+								console.log('	install api...');
+								iList('application/api/%name%/', function() {
+									console.log('	install components...');
+									iList('application/components/%name%/react/', function() {
+										complete();
+									});
 								});
 							});
 						});
