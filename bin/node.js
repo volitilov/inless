@@ -61,6 +61,10 @@ switch (command) {
 			case "route":
 				inless.removeRoute(args[4]);
 				break;
+			case "plg":
+			case "plugin":
+				inless.removePlugin(args[4]);
+				break;
 			case "mod":
 			case "modificator":
 				inless.removeModificator(args[4]);

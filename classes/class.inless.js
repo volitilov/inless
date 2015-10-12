@@ -464,6 +464,33 @@ var inLess = (function() {
 				});
 			}
 			a();
+		},
+		removePlugin: function(name) {
+			var x = function() {
+				console.log('remove Plugin ' + name);
+				cfs.rm('./application/plugins/'+name);
+				var config = JSON.parse(cfs.readFile('./configs/plugins.json').toString());
+				var credentials = JSON.parse(cfs.readFile('./configs/credentials.json').toString());
+				delete config[name];
+				delete credentials[name];
+				cfs.writeFile('./configs/plugins.json', JSON.stringify(config, true, '	'));
+				cfs.writeFile('./configs/credentials.json', JSON.stringify(credentials, true, '	'));
+				console.log('complete');
+			}
+			var a = function() {
+				if(name) {
+					return x();
+				}
+				cfs.readLine('plugin name:', function(answer) {
+					if(answer) {
+						name = answer;
+						x();
+					} else {
+						console.log('wrong name');
+					}
+				});
+			}
+			a();
 		}
 	};
 	return Class;
