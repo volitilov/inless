@@ -11,6 +11,7 @@ var command = args[2];
 // console.log(args);
 
 switch (command) {
+	case "res":
 	case "restore":
 		inless.restore();
 		break;
@@ -48,8 +49,11 @@ switch (command) {
 				inless.createApi(args[4], args[5]);
 				break;
 			default:
+				console.log('Wrong create parameter:', args[4]);
 		}
 		break;
+	case "rm":
+	case "rem":
 	case "remove":
 		switch (args[3]) {
 			case "com":
@@ -70,13 +74,11 @@ switch (command) {
 				inless.removeModificator(args[4]);
 				break;
 			default:
+				console.log('Wrong remove parameter:', args[4]);
 		}
 		break;
-	case "test":
-		console.log(require('path').resolve(module.paths[1], '../files'));
-		//inless.test();
-		break;
 	default:
+		console.log('Wrong commang:', command);
 }
 
 
