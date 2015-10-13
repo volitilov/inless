@@ -14,23 +14,19 @@ var router = express.Router();
 
 router.post('/:plugin/:method', (req, res, next)=> {
 	try {
-		var session = new Session(req.session);
+		var session = new Session(req.session.session);
 		if(plugins.list[req.params.plugin] && plugins.list[req.params.plugin][req.params.method]) {
 			logger.info(`${req.params.plugin}.${req.params.method}`, req.body||req.query||{});
 			plugins.list[req.params.plugin][req.params.method](req.body||req.query||{}, session).then((data)=> {
 				session = session.export();
-				req.session.account = session.account;
-				req.session.data = session.data;
-				req.session.storage = session.storage;
+				req.session.session = session;
 				res.json({
 					error: null,
 					response: data
 				});
 			}).catch((error)=> {
 				session = session.export();
-				req.session.account = session.account;
-				req.session.data = session.data;
-				req.session.storage = session.storage;
+				req.session.session = session;
 				logger.error(error);
 				res.json({
 					error: error,

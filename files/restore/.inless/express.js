@@ -5,6 +5,7 @@ import eLogger from 'morgan';
 import bodyParser from 'body-parser';
 import multer from 'multer';
 import compression from 'compression';
+import Session from 'session';
 
 import mode from 'startmode';
 
@@ -35,22 +36,15 @@ app.use(multer({
 }));
 app.use(express.static(path.join(__dirname, './../application/static')));
 app.use(cookieParser);
+
 app.use(session);
 app.use((req, res, next) => {
 	if (!req.session) {
 		req.session = {};
 	}
-	if (!req.session.account) {
-		req.session.account = {
-			status: 8,
-			id: null
-		};
-	}
-	if (!req.session.status) {
-		req.session.status = 8;
-	}
-	if (!req.session.id) {
-		req.session.id = null;
+	if (!req.session.session) {
+		var session = new Session();
+		req.session.session = session.export();
 	}
 	next();
 });

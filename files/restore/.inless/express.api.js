@@ -2,7 +2,7 @@ import path from 'path';
 import configs from 'configs';
 import express from 'express';
 import Logger from 'logger';
-import Session from 'plugins/session.js';
+// import Session from 'session';
 
 var logger = Logger.getLogger('express.api');
 
