@@ -2,6 +2,7 @@
 	"react": {
 		"layout": "/basics/react/layout.jsx",
 		"template": "/basics/react/_template.html",
+		"server": "/basics/react/server.js",
 		"APIPath": "/api",
 		"RPCPath": "/rpc",
 		"preDataPath": "/preData"
