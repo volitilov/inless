@@ -115,7 +115,7 @@ var components = getComponents();
 var modificators = getModificators();
 
 var render = function(mode, cb) {
-	if (true || bundle.length == 0) {
+	if (mode != 'production' || bundle.length == 0) {
 		media = false && media.length ? media : make();
 		less.render(media, {
 				compress: mode == 'production'
