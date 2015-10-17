@@ -15,6 +15,9 @@ var configs = require('configs');
 var appConfig = configs('application');
 var styleConfig = configs('style');
 
+var rootSelector = appConfig.style.rootSelector || '.application';
+
+
 var getComponents = function() {
 	var data = [];
 	var files = fs.readdirSync(path.resolve('./application/components'));
@@ -60,6 +63,7 @@ var compileProject = function(dir) {
 		var source = fs.readFileSync(p).toString();
 		var a = source.match(/@import\s?\(\s?(?:less|css)\s?\)\s?(?:\"|\')?([^\'\"\;]+)(?:\"|\')?\;?/i);
 		if (a) {
+			logger.trace(path.parse(p).dir);
 			var inSource = getContent(path.parse(p).dir, a[1]);
 			source = source.replace(/@import\s?\(\s?(?:less|css)\s?\)\s?(?:\"|\')?([^\'\"\;]+)(?:\"|\')?\;?/i, inSource);
 		}
@@ -89,10 +93,10 @@ var make = function() {
 		head += `.offset-${level.name}(@cols:1, @row: 12) { margin-right: ${level.width}px / @row * @cols; }`;
 		// --
 		components.forEach(function(comp, i) {
-			cmps += `.c-${comp}, .com-${comp}, .comp-${comp}, .component-${comp} {.application > .com-${comp} > .${level.name}(); }`;
+			cmps += `.c-${comp}, .com-${comp}, .comp-${comp}, .component-${comp} {${rootSelector} > .com-${comp} > .${level.name}(); }`;
 		});
 		modificators.forEach(function(mod, i) {
-			mods += `.m-${mod}, .mod-${mod}, .modificator-${mod} {.application > .mod-${mod} > .${level.name}(); }`;
+			mods += `.m-${mod}, .mod-${mod}, .modificator-${mod} {${rootSelector} > .mod-${mod} > .${level.name}(); }`;
 		});
 		modificatorsLevels += `@media @media-${level.name} {${mods}}`;
 		componentsLevels += `@media @media-${level.name} {${cmps}}`;
@@ -105,7 +109,7 @@ var make = function() {
 		var source = compileProject(`./application/modificators/${mod}/markup/`);
 		modificatorsBody += `.m-${mod}, .mod-${mod}, .modificator-${mod} {${levelsLocal} ${source}}`;
 	});
-	return `${basics} .application { ${head} ${modificatorsBody} ${modificatorsLevels} ${componentsBody} ${componentsLevels} }`;
+	return `${basics} ${rootSelector} { ${head} ${modificatorsBody} ${modificatorsLevels} ${componentsBody} ${componentsLevels} }`;
 }
 
 var media = '';
