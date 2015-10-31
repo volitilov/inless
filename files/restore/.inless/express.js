@@ -32,7 +32,7 @@ app.use(bodyParser.urlencoded({
 	extended: true
 }));
 app.use(multer({
-	dest: path.resolve('./../', servConfig.temp || './tmp/')
+	dest: path.resolve(servConfig.temp || './tmp/')
 }));
 app.use(express.static(path.join(__dirname, './../application/static')));
 app.use(cookieParser);
