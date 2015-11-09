@@ -63,7 +63,7 @@ var compileProject = function(dir) {
 		var source = fs.readFileSync(p).toString();
 		var a = source.match(/@import\s?\(\s?(?:less|css)\s?\)\s?(?:\"|\')?([^\'\"\;]+)(?:\"|\')?\;?/i);
 		if (a) {
-			logger.trace(path.parse(p).dir);
+			// logger.trace(path.parse(p).dir);
 			var inSource = getContent(path.parse(p).dir, a[1]);
 			source = source.replace(/@import\s?\(\s?(?:less|css)\s?\)\s?(?:\"|\')?([^\'\"\;]+)(?:\"|\')?\;?/i, inSource);
 		}
