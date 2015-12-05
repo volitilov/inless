@@ -158,6 +158,27 @@ var inLess = (function() {
 				});
 			}
 		},
+		createLibrary: function(name) {
+			var defName = 'lib'+((Math.random()*1000)|0);
+			var x = function() {
+				console.log('create Library ' + name);
+				cfs.mkdir('./application/librares/'+name);
+				var extractFiles = function() {
+					cfs.untar('$FILES/library/library.tar.gz', './application/librares/'+name+'/', function(err) {
+						console.log('complete');
+					});
+				}
+				extractFiles();
+			}
+			if(name) {
+				x();
+			} else {
+				cfs.readLine('library name (default "'+defName+'"):', function(answer) {
+					name = answer||defName;
+					x();
+				});
+			}
+		},
 		createPlugin: function(name) {
 			var defName = 'plugin'+((Math.random()*1e3)|0);
 			var x = function() {

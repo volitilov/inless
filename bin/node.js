@@ -41,6 +41,10 @@ switch (command) {
 			case "modificator":
 				inless.createModificator(args[4]);
 				break;
+			case "lib":
+			case "library":
+				inless.createLibrary(args[4]);
+				break;
 			case "plg":
 			case "plugin":
 				inless.createPlugin(args[4]);
