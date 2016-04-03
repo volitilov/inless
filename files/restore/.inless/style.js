@@ -119,6 +119,7 @@ var components = getComponents();
 var modificators = getModificators();
 
 var render = function(mode, cb) {
+	var uikit = fs.readFileSync(path.join(`./application/`, appConfig.style['ui-kit'])).toString();
 	if (mode != 'production' || bundle.length == 0) {
 		media = false && media.length ? media : make();
 		less.render(media, {
@@ -126,7 +127,7 @@ var render = function(mode, cb) {
 			},
 			function(e, output) {
 				if (e) logger.error(e);
-				bundle = output ? output.css : '.error {}';
+				bundle = output ? (output.css + uikit) : '.error {}';
 				cb(bundle);
 			});
 	} else {
